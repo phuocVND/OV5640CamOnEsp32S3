@@ -1,0 +1,14 @@
+[mapping:psram_iram]
+archive: libheap.a
+entries:
+    tlsf (noflash)
+    multi_heap:multi_heap_register_impl (noflash)
+    multi_heap:multi_heap_register (noflash)
+    heap_caps_init:heap_caps_add_region_with_caps (noflash)
+    heap_caps_init:heap_caps_add_region (noflash)
+
+[mapping:i2c_iram]
+archive: libesp_driver_i2c.a
+entries:
+    i2c_master (noflash)
+    i2c_common (noflash)

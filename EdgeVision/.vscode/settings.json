@@ -1,0 +1,19 @@
+{
+  "C_Cpp.intelliSenseEngine": "default",
+  "idf.extensionActivationMode": "always",
+  "idf.openOcdConfigs": [
+    "board/esp32s3-bridge.cfg"
+  ],
+  "idf.port": "/dev/tty.usbserial-210",
+  "idf.currentSetup": "/Users/phuocvnd/.espressif/release-v5.5/esp-idf",
+  "idf.customExtraVars": {
+    "IDF_TARGET": "esp32s3"
+  },
+  "clangd.path": "/Users/phuocvnd/.espressif/tools/esp-clang/esp-19.1.2_20250312/esp-clang/bin/clangd",
+  "clangd.arguments": [
+    "--background-index",
+    "--query-driver=**",
+    "--compile-commands-dir=/Users/phuocvnd/Desktop/OV5640CamOnEsp32S3/EdgeVision/build"
+  ],
+  "idf.flashType": "UART"
+}

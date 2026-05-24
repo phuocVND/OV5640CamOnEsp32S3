@@ -1,0 +1,16 @@
+# ESP32-S3 N16R8 Partition Table
+# Chip: 16MB Flash (0x1000000 total)
+#
+# Layout:
+#   0x0000   - 0x7FFF   : Bootloader (32KB, managed by IDF)
+#   0x8000   - 0x8FFF   : Partition table (4KB)
+#   0x9000   - 0xEFFF   : NVS (24KB)
+#   0xF000   - 0xFFFF   : PHY init data (4KB)
+#   0x10000  - 0x40FFFF : Factory app (4MB)
+#   0x410000 - 0xFFFFFF : SPIFFS storage (~12MB for image capture)
+#
+# Name,    Type, SubType, Offset,   Size,    Flags
+nvs,       data, nvs,     0x9000,   0x6000,
+phy_init,  data, phy,     0xF000,   0x1000,
+factory,   app,  factory, 0x10000,  0x400000,
+storage,   data, spiffs,  0x410000, 0xBF0000,

@@ -1,0 +1,9 @@
+{
+    "idf.customExtraVars": {},
+    "idf.currentSetup": "/Users/phuocvnd/.espressif/release-v5.5/esp-idf",
+    "idf.openOcdConfigs": [
+        "board/esp32s3-builtin.cfg"
+    ],
+    "idf.flashType": "UART",
+    "idf.port": "/dev/tty.usbserial-210"
+}

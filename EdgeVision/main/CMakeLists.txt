@@ -1,0 +1,14 @@
+idf_component_register(
+    SRCS
+        "main.c"
+        "camera/camera_drv.c"
+        "network/wifi_sta.c"
+        "network/tcp_client.c"
+        "servo/servo_ctrl.c"
+    INCLUDE_DIRS
+        "."
+        "camera"
+        "network"
+        "servo"
+    LDFRAGMENTS
+        "psram_iram.lf")
