@@ -6,15 +6,15 @@
  * ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ─── WiFi ──────────────────────────────────────────────────────────────── */
-#define WIFI_SSID               "Ge cafe"
+#define WIFI_SSID               "duyphuoc"
     /* WiFi network name (SSID) — router/hotspot name to connect to */
-#define WIFI_PASSWORD           "gexincamon"
+#define WIFI_PASSWORD           "66666666"
     /* WiFi password — authentication for WPA2-PSK security */
 #define WIFI_MAX_RETRY          5
     /* Max reconnection attempts if WiFi drops — after 5 fails, stop and wait for manual reset */
 
 /* ─── TCP server (runs object detection, returns servo angles) ───────────── */
-#define TCP_SERVER_IP           "192.168.1.77"
+#define TCP_SERVER_IP           "172.20.10.4"
     /* Server IP running Python detection script — ESP connects here to send JPEG + receive servo angles */
     /* STATIC IP recommended (not DHCP) for reliability — if server IP changes, update this */
 #define TCP_PORT_IMAGE          9000
@@ -191,3 +191,31 @@
     /* Servo command queue: depth MUST be 1 for xQueueOverwrite() function */
     /* xQueueOverwrite: always replaces single slot with latest servo angles */
     /* Prevents stale commands; only newest command from server matters */
+
+/* ─── LCD (ST7789 1.9" 170×320 IPS, 4-Wire SPI) ─────────────────────────── */
+    /* Wiring: GND→GND, VCC→5V (module has onboard LDO, needs 5V for backlight LED driver),
+     *         BLK→GPIO45 (software-controlled backlight enable) */
+    /* NOTE: GPIO38=CAM_PWDN and GPIO47=CAM_RESET — do NOT reuse those for LCD */
+#define LCD_PIN_SCL             14   /* SPI Clock (SCLK) */
+#define LCD_PIN_SDA             21   /* SPI MOSI  */
+#define LCD_PIN_RES              3   /* Reset — GPIO3 (JTAG_EN, safe as output post-boot) */
+#define LCD_PIN_DC              19   /* Data/Command select */
+#define LCD_PIN_CS              20   /* Chip Select (active LOW) */
+#define LCD_PIN_BLK             45   /* Backlight enable (active HIGH, 3.3V output) */
+#define LCD_H_RES               170  /* Panel width  (portrait) */
+#define LCD_V_RES               320  /* Panel height (portrait) */
+#define LCD_SPI_CLK_HZ          (20 * 1000 * 1000)  /* 20MHz — safe for GPIO-matrix routing */
+    /* Native SPI pins can do 80MHz; GPIO matrix limits reliable speed to ~20-40MHz */
+
+/* ─── LCD task ───────────────────────────────────────────────────────────── */
+#define TASK_CORE_LCD           1    /* Core 1 with camera; lower priority → camera preempts */
+#define TASK_PRIO_LCD           3    /* Below camera(5) and TCP(4), above idle(0) */
+#define TASK_STACK_LCD          6144 /* 6KB: esp_jpeg_decode heap-allocates working buf */
+
+/* ─── LCD display pipeline ──────────────────────────────────────────────── */
+#define LCD_JPEG_BUF_SIZE       (80 * 1024)  /* Max JPEG frame size: 80KB > quality-15 ~60KB */
+#define LCD_DECODE_W            640           /* JPEG full-scale decode output: VGA 640 */
+#define LCD_DECODE_H            480           /* JPEG full-scale decode output: VGA 480 */
+#define LCD_FRAME_SKIP          3             /* Show every 3rd camera frame on LCD (~7fps) */
+    /* JPEG decode takes ~20ms; at 20fps camera, every 3rd frame = 150ms = ~7fps LCD */
+    /* Higher skip = faster TCP (lcd_task gets fewer interruptions from camera_task) */

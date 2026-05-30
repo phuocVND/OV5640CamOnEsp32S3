@@ -5,10 +5,12 @@ idf_component_register(
         "network/wifi_sta.c"
         "network/tcp_client.c"
         "servo/servo_ctrl.c"
+        "lcd/lcd_drv.c"
     INCLUDE_DIRS
         "."
         "camera"
         "network"
         "servo"
+        "lcd"
     LDFRAGMENTS
         "psram_iram.lf")

@@ -58,9 +58,21 @@ esp_err_t camera_drv_init(void)
         return err;
     }
 
-    ESP_LOGI(TAG, "Camera init OK (frame=%dx%d, q=%d, fb_count=%d)",
-             /* resolution lookup: esp_camera_sensor_get()->status.framesize */
-             0, 0, CAM_JPEG_QUALITY, CAM_FB_COUNT);
+    /* Tune OV5640 image quality: increase brightness and contrast so
+     * the LCD preview is visible in normal indoor lighting. */
+    sensor_t *s = esp_camera_sensor_get();
+    if (s) {
+        s->set_brightness(s,  1);  /* -2..+2, +1 = brighter */
+        s->set_contrast(s,    1);  /* -2..+2, +1 = more contrast */
+        s->set_saturation(s,  0);  /* -2..+2,  0 = natural */
+        s->set_exposure_ctrl(s, 1); /* 1 = auto-exposure ON */
+        s->set_gain_ctrl(s,   1);  /* 1 = auto-gain ON */
+        s->set_awb_gain(s,    1);  /* 1 = AWB gain ON */
+        s->set_whitebal(s,    1);  /* 1 = auto white balance ON */
+        ESP_LOGI(TAG, "Sensor tuning applied: brightness=+1 contrast=+1 AEC/AGC/AWB=ON");
+    }
+
+    ESP_LOGI(TAG, "Camera init OK (q=%d, fb_count=%d)", CAM_JPEG_QUALITY, CAM_FB_COUNT);
     return ESP_OK;
 }
 
